@@ -11,45 +11,10 @@ def wylicz_kat_beta(ilosc_otworow):
     return Decimal(str(360 / ilosc_otworow))
 
 
-def znajdz_pierwszy_punkt(alfa, srednica_podzialowa):
-    getcontext().prec = 4
-    srednica_podzialowa = Decimal(str(srednica_podzialowa))
-    promien = srednica_podzialowa / Decimal('2')
-
-    # alfa = Decimal(str(alfa))
-
-    if alfa == 90:
-        x = 0.0
-        y = float(promien)
-
-    else:
-
-        alfa_rad = Decimal(str(math.radians(alfa)))
-        tangens = Decimal(str(math.tan(alfa_rad)))
-
-        x = promien / Decimal(str(math.sqrt(tangens ** 2 + Decimal('1'))))
-        y = Decimal(tangens * x)
-
-        x = float(x)
-        y = float(y)
-
-    if -0.001 < x < 0.001:
-        x = 0.0
-
-    if -0.001 < y < 0.001:
-        y = 0.0
-
-    result = (x, y)
-
-    return result
-
-
 def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
     getcontext().prec = 4
     srednica_podzialowa = Decimal(str(srednica_podzialowa))
     promien = srednica_podzialowa / Decimal('2')
-
-    # gamma = Decimal(str(gamma))
 
     if gamma == 90:
         x = 0.0
@@ -113,13 +78,11 @@ def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
     getcontext().prec = 4
     alfa = Decimal(alfa)
     beta = wylicz_kat_beta(ilosc_otworow)
-    gamma = alfa + beta
+    gamma = alfa
 
     punkty = []
-    punkt_1 = znajdz_pierwszy_punkt(alfa, srednica_podzialowa)
-    punkty.append(punkt_1)
 
-    for i in range(0, ilosc_otworow - 1):
+    for i in range(0, ilosc_otworow):
         punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
         punkty.append(punkt)
         gamma += beta
