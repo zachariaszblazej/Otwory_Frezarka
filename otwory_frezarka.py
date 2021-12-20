@@ -83,11 +83,13 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
     return result
 
 
-def narysuj_obraz_pogladowy(punkty, srednica_podzialowa):
+def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
     fig = plt.figure()
 
     axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
     plt.gca().set_aspect('equal', adjustable='box')
+
+    plt.title(f'alfa = {alfa}, ilość otworów = {ilosc_otworow}, PD = {srednica_podzialowa}')
 
     promien = float(srednica_podzialowa) / 2
     granica = promien + 3
@@ -122,7 +124,7 @@ def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
         punkty.append(punkt)
         gamma += beta
 
-    narysuj_obraz_pogladowy(punkty, srednica_podzialowa)
+    narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow)
 
     return punkty
 
