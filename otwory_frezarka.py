@@ -32,10 +32,10 @@ def znajdz_pierwszy_punkt(alfa, srednica_podzialowa):
         x = float(x)
         y = float(y)
 
-    if x < 0.001:
+    if -0.001 < x < 0.001:
         x = 0.0
 
-    if y < 0.001:
+    if -0.001 < y < 0.001:
         y = 0.0
 
     result = (x, y)
@@ -71,10 +71,10 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
         x = float(x)
         y = float(y)
 
-    if x < 0.001:
+    if -0.001 < x < 0.001:
         x = 0.0
 
-    if y < 0.001:
+    if -0.001 < y < 0.001:
         y = 0.0
 
     result = (x, y)
