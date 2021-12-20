@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Title</title>
+</head>
+<body>
+Wyniki dla:</br></br>
+Ilość otworów: {{ilosc_otworow}}</br></br>
+Alfa: {{alfa}}</br></br>
+Średnica podziałowa: {{srednica}}</br></br></br>
+
+Punkty:</br></br>
+
+{% for x,y in punkty %}
+    X: {{x}}, Y: {{y}} <br><br>
+{% endfor %}
+<a href="../"><input type="button" value="Strona główna"/></a>
+
+</body>
+</html>

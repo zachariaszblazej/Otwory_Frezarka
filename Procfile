@@ -1,0 +1,1 @@
+web: gunicorn otwory_frezarka:app
