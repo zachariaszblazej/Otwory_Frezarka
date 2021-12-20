@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Otwory Frezarka - Strona Główna</title>
+    <title>Otwory Frezarka</title>
 </head>
 <body>
     <form action="wylicz_otwory" method="post">
         <label for="alfa">Kąt alfa: </label>
-        <input type="text" id="alfa" name="alfa"></br></br>
+        <input type="text" id="alfa" name="alfa" value="{{alfa}}"> </br></br>
 
         <label for="ilosc_otworow">Ilość otworów: </label>
-        <input type="text" id="ilosc_otworow" name="ilosc_otworow"></br></br>
+        <input type="text" id="ilosc_otworow" name="ilosc_otworow" value="{{ilosc_otworow}}"></br></br>
 
         <label for="srednica">Średnica podziałowa: </label>
-        <input type="text" id="srednica" name="srednica"></br></br>
+        <input type="text" id="srednica" name="srednica" value="{{srednica}}"></br></br>
 
         <input type="submit" value="Wyznacz punkty" id="submit_btn">
     </form>
+
+    {% block wyliczenia %} {% endblock %}
+
+
 </body>
 </html>

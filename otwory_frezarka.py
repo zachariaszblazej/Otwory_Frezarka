@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 import math
 from decimal import *
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -82,6 +83,30 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
     return result
 
 
+def narysuj_obraz_pogladowy(punkty, srednica_podzialowa):
+    fig = plt.figure()
+
+    axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+    plt.gca().set_aspect('equal', adjustable='box')
+
+    promien = float(srednica_podzialowa) / 2
+    granica = promien + 3
+
+    plt.xlim(-granica, granica)
+    plt.ylim(-granica, granica)
+
+    plt.axvline(x=0, color='black')
+    plt.axhline(y=0, color='black')
+
+    circle = plt.Circle((0, 0), promien, fill=False)
+    axes.add_artist(circle)
+
+    for xp, yp in punkty:
+        plt.scatter(xp, yp)
+
+    plt.savefig('./static/obraz_pogladowy.png')
+
+
 def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
     getcontext().prec = 4
     alfa = Decimal(alfa)
@@ -97,12 +122,14 @@ def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
         punkty.append(punkt)
         gamma += beta
 
+    narysuj_obraz_pogladowy(punkty, srednica_podzialowa)
+
     return punkty
 
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return render_template('base.html', alfa=0, ilosc_otworow=2, srednica=1)
 
 
 @app.route('/wylicz_otwory', methods=['GET', 'POST'])
@@ -113,5 +140,6 @@ def wylicz_otwory():
         srednica_podzialowa = request.form['srednica']
 
         punkty = znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa)
+
         return render_template('wylicz_otwory.html', ilosc_otworow=ilosc_otworow, alfa=alfa,
                                srednica=srednica_podzialowa, punkty=punkty)
