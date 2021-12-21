@@ -4,9 +4,19 @@
 
 Punkty:</br></br>
 
-{% for x,y in punkty %}
-    X: {{x}}, Y: {{y}} <br><br>
-{% endfor %}
+<table>
+    <tr>
+        <th>X</th>
+        <th>Y</th>
+    </tr>
+    {% for x, y in punkty %}
+    <tr>
+        <td>{{x}}</td>
+        <td>{{y}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
 
 <img id="rysunek" src="static/obraz_pogladowy.png">
 

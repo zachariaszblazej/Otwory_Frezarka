@@ -34,8 +34,8 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
         y = Decimal(tangens * x)
 
-        x = float(x)
-        y = float(y)
+        x = round(float(x), 3)
+        y = round(float(y), 3)
 
     if -0.001 < x < 0.001:
         x = 0.0
@@ -57,7 +57,7 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
     plt.title(f'alfa = {alfa}, ilość otworów = {ilosc_otworow}, PD = {srednica_podzialowa}')
 
     promien = float(srednica_podzialowa) / 2
-    granica = promien + 3
+    granica = promien * 1.3
 
     plt.xlim(-granica, granica)
     plt.ylim(-granica, granica)
@@ -65,11 +65,11 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
     plt.axvline(x=0, color='black')
     plt.axhline(y=0, color='black')
 
-    circle = plt.Circle((0, 0), promien, fill=False)
+    circle = plt.Circle((0, 0), promien, fill=False, linestyle='dashed')
     axes.add_artist(circle)
 
     for xp, yp in punkty:
-        plt.scatter(xp, yp)
+        plt.scatter(xp, yp, s=200)
 
     plt.savefig('./static/obraz_pogladowy.png')
 
