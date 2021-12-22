@@ -1,25 +1,31 @@
 {% extends "base.html" %}
 
 {% block wyliczenia %}
-<img id="rysunek" src="static/obraz_pogladowy.png">
-<table>
-    <tr>
-        <th>Punkt</th>
-        <th>X</th>
-        <th>Y</th>
+{% if typ %}
+    <p class="error_message">{{punkty}}</p>
 
-    </tr>
-    {% for x, y, ozn in punkty %}
-    <tr>
-        <td><b>{{ozn}}</b></td>
-        <td>{{x}}</td>
-        <td>{{y}}</td>
+{% else %}
 
-    </tr>
-    {% endfor %}
+    <img id="rysunek" src="static/obraz_pogladowy.png">
+    <table>
+        <tr>
+            <th>Punkt</th>
+            <th>X</th>
+            <th>Y</th>
 
-</table>
+        </tr>
+        {% for x, y, ozn in punkty %}
+        <tr>
+            <td><b>{{ozn}}</b></td>
+            <td>{{x}}</td>
+            <td>{{y}}</td>
 
+        </tr>
+        {% endfor %}
+
+    </table>
+
+{% endif %}
 
 
 {% endblock %}

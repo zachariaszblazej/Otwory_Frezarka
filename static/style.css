@@ -22,3 +22,7 @@ table, th, td {
     right: 12px;
 
 }
+
+.error_message {
+    color: red;
+}

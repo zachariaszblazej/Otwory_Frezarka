@@ -82,21 +82,33 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
 def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
     getcontext().prec = 4
     alfa = Decimal(alfa)
-    beta = wylicz_kat_beta(ilosc_otworow)
-    gamma = alfa
 
-    punkty = []
+    if ilosc_otworow == 1 and (alfa > 360 or alfa < 0):
+        return 'Przy 1 otworze kąt alfa musi być liczbą z przedziału 0-360.'
 
-    for i in range(0, ilosc_otworow):
-        punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
-        oznaczenie = string.ascii_uppercase[i] if ilosc_otworow <= 25 else i + 1
-        punkt.append(oznaczenie)
-        punkty.append(punkt)
-        gamma += beta
+    elif (ilosc_otworow == 2 or ilosc_otworow == 3) and (alfa > 180 or alfa < 0):
+        return f'Przy {ilosc_otworow} otworach kąt alfa musi być liczbą z przedziału 0-180.'
 
-    narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow)
+    elif ilosc_otworow > 3 and (alfa < 0 or alfa > 90):
+        return f'Przy {ilosc_otworow} otworach kąt alfa musi być liczbą z przedziału 0-90.'
 
-    return punkty
+    else:
+
+        beta = wylicz_kat_beta(ilosc_otworow)
+        gamma = alfa
+
+        punkty = []
+
+        for i in range(0, ilosc_otworow):
+            punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
+            oznaczenie = i + 1
+            punkt.append(oznaczenie)
+            punkty.append(punkt)
+            gamma += beta
+
+        narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow)
+
+        return punkty
 
 
 @app.route('/')
@@ -112,6 +124,7 @@ def wylicz_otwory():
         srednica_podzialowa = request.form['srednica']
 
         punkty = znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa)
+        typ = (type(punkty) == str)
 
         return render_template('wylicz_otwory.html', ilosc_otworow=ilosc_otworow, alfa=alfa,
-                               srednica=srednica_podzialowa, punkty=punkty)
+                               srednica=srednica_podzialowa, punkty=punkty, typ=typ)

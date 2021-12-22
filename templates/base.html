@@ -7,7 +7,7 @@
     <title>Otwory Frezarka</title>
 </head>
 <body>
-    <form action="wylicz_otwory" method="post">
+    <form name = "otwory_form" action="wylicz_otwory" method="post">
         <label for="alfa">Kąt alfa: </label>
         <input type="text" id="alfa" name="alfa" value="{{alfa}}"> </br></br>
 
@@ -21,7 +21,6 @@
     </form>
     </br></br>
     {% block wyliczenia %} {% endblock %}
-
 
 </body>
 </html>
