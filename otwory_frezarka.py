@@ -1,7 +1,6 @@
-import string
-
 from flask import Flask, render_template, request
 import math
+import string
 from decimal import *
 import matplotlib.pyplot as plt
 
@@ -72,8 +71,10 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
 
     for xp, yp, ozn in punkty:
         plt.scatter(xp, yp, s=200)
-        plt.annotate(ozn, (xp, yp), textcoords="offset points", xytext=(0, 10), ha='left', va='bottom',
-                     fontsize='medium', fontweight='bold', color="red")
+
+        if ilosc_otworow <= 25:
+            plt.annotate(ozn, (xp, yp), textcoords="offset points", xytext=(0, 10), ha='left', va='bottom',
+                         fontsize='medium', fontweight='bold', color="red")
 
     plt.savefig('./static/obraz_pogladowy.png', bbox_inches='tight')
 
@@ -88,7 +89,7 @@ def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
 
     for i in range(0, ilosc_otworow):
         punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
-        oznaczenie = string.ascii_uppercase[i]
+        oznaczenie = string.ascii_uppercase[i] if ilosc_otworow <= 25 else i + 1
         punkt.append(oznaczenie)
         punkty.append(punkt)
         gamma += beta
