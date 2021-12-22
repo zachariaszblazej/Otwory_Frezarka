@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    <title>Otwory Frezarka</title>
+</head>
+<body>
+{% block error %}
+    <p class="error_message">Wszystkie pola muszą być wypełnione i mają być liczbami.<br>
+                            Cofnij aby poprawić dane. </p>
+{% endblock %}
+</body>

@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 import math
-import string
 from decimal import *
 import matplotlib.pyplot as plt
 
@@ -8,14 +7,13 @@ app = Flask(__name__)
 
 
 def wylicz_kat_beta(ilosc_otworow):
-    getcontext().prec = 4
-    return Decimal(str(360 / ilosc_otworow))
+
+    return 360 / ilosc_otworow
 
 
 def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
-    getcontext().prec = 4
-    srednica_podzialowa = Decimal(str(srednica_podzialowa))
-    promien = srednica_podzialowa / Decimal('2')
+
+    promien = srednica_podzialowa / 2
 
     if gamma == 90:
         x = 0.0
@@ -27,13 +25,13 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
     else:
 
-        gamma_rad = Decimal(str(math.radians(gamma)))
-        tangens = Decimal(str(math.tan(gamma_rad)))
+        gamma_rad = math.radians(gamma)
+        tangens = math.tan(gamma_rad)
 
-        x_abs = promien / Decimal(str(math.sqrt(tangens ** 2 + Decimal('1'))))
+        x_abs = promien / math.sqrt(tangens ** 2 + 1)
         x = -x_abs if 90 < gamma < 270 else x_abs
 
-        y = Decimal(tangens * x)
+        y = tangens * x
 
         x = round(float(x), 3)
         y = round(float(y), 3)
@@ -50,6 +48,7 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
 
 def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
+
     fig = plt.figure()
 
     axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
@@ -57,7 +56,7 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
 
     plt.title(f'alfa = {alfa}, ilość otworów = {ilosc_otworow}, PD = {srednica_podzialowa}')
 
-    promien = float(srednica_podzialowa) / 2
+    promien = srednica_podzialowa / 2
     granica = promien * 1.3
 
     plt.xlim(-granica, granica)
@@ -80,35 +79,44 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
 
 
 def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
-    getcontext().prec = 4
-    alfa = Decimal(alfa)
 
-    if ilosc_otworow == 1 and (alfa > 360 or alfa < 0):
+    if srednica_podzialowa < 0 or ilosc_otworow < 0 or alfa < 0:
+        return 'Wszystkie pola muszą być dodatnie.'
+
+    elif (ilosc_otworow // 1) != (ilosc_otworow / 1):
+        return 'Ilość otworów musi być dodatnią liczbą całkowitą.'
+
+    elif ilosc_otworow == 1 and (alfa > 360 or alfa < 0):
         return 'Przy 1 otworze kąt alfa musi być liczbą z przedziału 0-360.'
 
     elif (ilosc_otworow == 2 or ilosc_otworow == 3) and (alfa > 180 or alfa < 0):
-        return f'Przy {ilosc_otworow} otworach kąt alfa musi być liczbą z przedziału 0-180.'
+        return f'Przy {int(ilosc_otworow)} otworach kąt alfa musi być liczbą z przedziału 0-180.'
 
     elif ilosc_otworow > 3 and (alfa < 0 or alfa > 90):
-        return f'Przy {ilosc_otworow} otworach kąt alfa musi być liczbą z przedziału 0-90.'
+        return f'Przy {int(ilosc_otworow)} otworach kąt alfa musi być liczbą z przedziału 0-90.'
 
-    else:
+    ilosc_otworow = int(ilosc_otworow)
+    beta = wylicz_kat_beta(ilosc_otworow)
+    gamma = alfa
 
-        beta = wylicz_kat_beta(ilosc_otworow)
-        gamma = alfa
+    punkty = []
 
-        punkty = []
+    for i in range(0, ilosc_otworow):
+        punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
+        oznaczenie = i + 1
+        punkt.append(oznaczenie)
+        punkty.append(punkt)
+        gamma += beta
 
-        for i in range(0, ilosc_otworow):
-            punkt = znajdz_kolejny_punkt(gamma, srednica_podzialowa)
-            oznaczenie = i + 1
-            punkt.append(oznaczenie)
-            punkty.append(punkt)
-            gamma += beta
+    narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow)
 
-        narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow)
+    return punkty
 
-        return punkty
+
+@app.errorhandler(ValueError)
+def server_error(err):
+    app.logger.exception(err)
+    return render_template('error_page.html'), 500
 
 
 @app.route('/')
@@ -119,9 +127,9 @@ def home():
 @app.route('/wylicz_otwory', methods=['GET', 'POST'])
 def wylicz_otwory():
     if request.method == 'POST':
-        ilosc_otworow = int(request.form['ilosc_otworow'])
-        alfa = request.form['alfa']
-        srednica_podzialowa = request.form['srednica']
+        ilosc_otworow = float(request.form['ilosc_otworow'])
+        alfa = float(request.form['alfa'])
+        srednica_podzialowa = float(request.form['srednica'])
 
         punkty = znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa)
         typ = (type(punkty) == str)
