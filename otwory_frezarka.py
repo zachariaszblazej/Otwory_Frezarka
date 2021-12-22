@@ -6,12 +6,10 @@ app = Flask(__name__)
 
 
 def wylicz_kat_beta(ilosc_otworow):
-
     return 360 / ilosc_otworow
 
 
 def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
-
     promien = srednica_podzialowa / 2
 
     if gamma == 90:
@@ -47,7 +45,6 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
 
 def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
-
     fig = plt.figure()
 
     axes = fig.add_axes([0.1, 0.1, 0.8, 0.8])
@@ -71,14 +68,19 @@ def narysuj_obraz_pogladowy(punkty, srednica_podzialowa, alfa, ilosc_otworow):
         plt.scatter(xp, yp, s=200)
 
         if ilosc_otworow <= 25:
-            plt.annotate(ozn, (xp, yp), textcoords="offset points", xytext=(0, 10), ha='left', va='bottom',
+            xtext = 5 if xp >= 0 else -3
+            ytext = 10 if yp >= 0 else -20
+            xytext = (xtext, ytext)
+
+            ha = 'left' if xp >= 0 else 'right'
+
+            plt.annotate(ozn, (xp, yp), textcoords="offset points", xytext=xytext, ha=ha,
                          fontsize='medium', fontweight='bold', color="red")
 
     plt.savefig('./static/obraz_pogladowy.png', bbox_inches='tight')
 
 
 def znajdz_wszystkie_otwory(ilosc_otworow, alfa, srednica_podzialowa):
-
     if srednica_podzialowa < 0 or ilosc_otworow < 0 or alfa < 0:
         return 'Wszystkie pola muszą być dodatnie.'
 
