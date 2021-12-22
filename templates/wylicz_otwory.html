@@ -1,23 +1,25 @@
 {% extends "base.html" %}
 
 {% block wyliczenia %}
-
-Punkty:</br></br>
-
+<img id="rysunek" src="static/obraz_pogladowy.png">
 <table>
     <tr>
+        <th>Punkt</th>
         <th>X</th>
         <th>Y</th>
+
     </tr>
-    {% for x, y in punkty %}
+    {% for x, y, ozn in punkty %}
     <tr>
+        <td><b>{{ozn}}</b></td>
         <td>{{x}}</td>
         <td>{{y}}</td>
+
     </tr>
     {% endfor %}
 
 </table>
 
-<img id="rysunek" src="static/obraz_pogladowy.png">
+
 
 {% endblock %}

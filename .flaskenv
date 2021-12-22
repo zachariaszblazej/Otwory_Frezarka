@@ -1,1 +1,2 @@
 FLASK_APP=otwory_frezarka.py
+FLASK_DEBUG=1

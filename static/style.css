@@ -1,8 +1,24 @@
-#rysunek {
-    width:380px;
-    height:300px;
+html, body {
+min-width: 100%;
+}
+
+table {
+position: relative;
+left: 289px;
+bottom: 316px;
 }
 
 table, th, td {
     border: 1px solid black;
+    text-align: center;
+
+}
+
+#rysunek {
+    width: 305px;
+    height: 300px;
+    position: relative;
+    bottom: 32px;
+    right: 12px;
+
 }
