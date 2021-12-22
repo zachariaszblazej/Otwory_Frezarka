@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 import math
-from decimal import *
 import matplotlib.pyplot as plt
 
 app = Flask(__name__)
@@ -17,11 +16,11 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
     if gamma == 90:
         x = 0.0
-        y = float(promien)
+        y = promien
 
     elif gamma == 270:
         x = 0.0
-        y = float(-promien)
+        y = -promien
 
     else:
 
@@ -33,8 +32,8 @@ def znajdz_kolejny_punkt(gamma, srednica_podzialowa):
 
         y = tangens * x
 
-        x = round(float(x), 3)
-        y = round(float(y), 3)
+        x = round(x, 3)
+        y = round(y, 3)
 
     if -0.001 < x < 0.001:
         x = 0.0
